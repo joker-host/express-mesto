@@ -6,7 +6,10 @@ const error = {
 };
 const errorJSON = JSON.stringify(error);
 
-const getAllUsers = (req, res) => getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'))
+const User = require('../models/user')
+
+
+const getAllUsers = (req, res) => User.find({})
   .then((data) => {
     if (!data) {
       res
@@ -19,31 +22,31 @@ const getAllUsers = (req, res) => getJsonFromFile(path.join(__dirname, '..', 'da
       .send(data);
   });
 
-const getUserById = async (req, res) => {
-  try {
-    const data = await getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'));
-    if (!data) {
-      throw new Error('Данные не получены');
-    }
-    console.log(data);
-    const foundUser = data.find((c) => c._id === req.params.id);
+const getUserById = (req, res) => {
+  console.log(req.params.id)
+  return User.findById({ _id: req.params.id })
+    .then((user) => {
 
-    if (!foundUser) {
-      res
-        .status(404)
-        .send(errorJSON);
-    }
-    res
-      .status(200)
-      .send(foundUser);
-  } catch (err) {
-    res
-      .status(500)
-      .send('oops');
-  }
-};
+      if (!user) {
+        return res.status(404).send({ message: 'Нет пользователя с таким id' })
+      }
+
+      return res.status(200).send(user);
+    })
+    .catch((err) => res.status(400).send(err))
+
+}
+
+const createUser = (req, res) => {
+  return User.create(req.body)
+    .then(user => res.status(200).send(user))
+    .catch(err => {
+      console.log(err)
+    })
+}
 
 module.exports = {
   getAllUsers,
   getUserById,
+  createUser
 };
