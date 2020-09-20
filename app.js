@@ -21,6 +21,13 @@ const missingRouter = {
 };
 const missingRouterJson = JSON.stringify(missingRouter);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5f6748b9de656839700ab7c3'
+  };
+  next();
+});
+
 app.use(
   express.static(
     path.join(__dirname, 'public'),

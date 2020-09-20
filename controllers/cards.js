@@ -1,7 +1,6 @@
-const path = require('path');
-const { getJsonFromFile } = require('../helpers/readFile');
+const Card = require('../models/card')
 
-const getAllCards = (req, res) => getJsonFromFile(path.join(__dirname, '..', 'data', 'cards.json'))
+const getAllCards = (req, res) => Card.find({})
   .then((data) => {
     if (!data) {
       res
@@ -14,6 +13,22 @@ const getAllCards = (req, res) => getJsonFromFile(path.join(__dirname, '..', 'da
       .send(data);
   });
 
+  const createCard = (req, res) => {
+    const { _id } = req.user;
+
+    return Card.create({ name: req.body.name, link: req.body.link, owner: _id })
+      .then(card => res.status(200).send(card))
+      .catch(err => {
+        console.log(err)
+      })
+      .finally(() => {
+        // console.log(_id);
+        console.log(req.body)
+      })
+  }
+
 module.exports = {
   getAllCards,
+  createCard
 };
+

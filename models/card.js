@@ -11,7 +11,12 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     require: true,
-    match: '^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$'
+    validate: {
+      validator: function(value) {
+        return /^(https?:\/\/)?([\da-z..-]+)\.([a-z.]{2,6})([\w .-]*)*\/?[#]?$/.test(value)
+      },
+      message: props => `${props.value} is not a valid link`
+    }
   },
 
   owner: {
@@ -21,7 +26,7 @@ const cardSchema = new mongoose.Schema({
   },
 
   likes: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Array,
     default: []
   }],
 
@@ -29,6 +34,7 @@ const cardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   }
-});
+},
+{versionKey: false});
 
 module.exports = mongoose.model('card', cardSchema);
