@@ -1,13 +1,4 @@
-const path = require('path');
-const { getJsonFromFile } = require('../helpers/readFile');
-
-const error = {
-  message: 'Нет пользователя с таким id',
-};
-const errorJSON = JSON.stringify(error);
-
 const User = require('../models/user')
-
 
 const getAllUsers = (req, res, next) => User.find({})
   .then((data) => {
