@@ -20,12 +20,13 @@ const userSchema = new mongoose.Schema({
     require: true,
     validate: {
       validator: function(v) {
-        return /^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/.test(v);
+        return /^(http|https):\/\/[^ "]+$/.test(v);
       },
       message: props => `${props.value} is not a valid link`
     }
   },
 
-});
+},
+{versionKey: false});
 
 module.exports = mongoose.model('user', userSchema);
