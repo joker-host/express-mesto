@@ -12,29 +12,29 @@ const cardSchema = new mongoose.Schema({
     type: String,
     require: true,
     validate: {
-      validator: function(value) {
-        return /^(http|https):\/\/[^ "]+$/.test(value)
+      validator(value) {
+        return /^(http|https):\/\/[^ "]+$/.test(value);
       },
-      message: props => `${props.value} is not a valid link`
-    }
+      message: (props) => `${props.value} is not a valid link`,
+    },
   },
 
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    required: true,
   },
 
   likes: [{
-    type: Array,
-    default: []
+    type: mongoose.Schema.Types.ObjectId,
+    default: [],
   }],
 
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 },
-{versionKey: false});
+{ versionKey: false });
 
 module.exports = mongoose.model('card', cardSchema);

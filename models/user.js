@@ -12,21 +12,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
     minlength: 2,
-    maxlength: 30
+    maxlength: 30,
   },
 
   avatar: {
     type: String,
     require: true,
     validate: {
-      validator: function(v) {
+      validator(v) {
         return /^(http|https):\/\/[^ "]+$/.test(v);
       },
-      message: props => `${props.value} is not a valid link`
-    }
+      message: (props) => `${props.value} is not a valid link`,
+    },
   },
 
 },
-{versionKey: false});
+{ versionKey: false });
 
 module.exports = mongoose.model('user', userSchema);
