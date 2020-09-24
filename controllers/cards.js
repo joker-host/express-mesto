@@ -27,7 +27,7 @@ const createCard = (req, res) => {
     .catch((err) => {
       res
         .status(500)
-        .send(err);
+        .send('Что-то пошло не так');
     });
 };
 
@@ -42,7 +42,7 @@ const deleteCard = (req, res) => Card.remove({ _id: req.params.id })
   .catch((err) => {
     res
       .status(500)
-      .send(err);
+      .send('Что-то пошло не так');
   });
 
 module.exports = {
