@@ -5,7 +5,7 @@ const getAllUsers = (req, res) => User.find({})
     if (!data) {
       res
         .status(500)
-        .send('Что-то пошло не так');
+        .send('На сервере произошла ошибка');
       return;
     }
     res
@@ -21,20 +21,21 @@ const getUserById = (req, res) => User.findById({ _id: req.params.id })
 
     return res.status(200).send(user);
   })
-  .catch((err) => res.status(500).send('Что-то пошло не так'));
+  .catch((err) => res.status(500).send('На сервере произошла ошибка'));
 
 const createUser = (req, res) => User.create(req.body)
+  .orFail(new Error('ValidationError'))
   .then((user) => {
-    if (!user) {
-      return res.status(400).send({ message: 'Переданы некорректные данные' });
-    }
-
     return res.status(201).send(user);
   })
-  .catch((err) => {
+  .catch((error) => {
+    if (error.name === 'ValidationError') {
+      res.status(400).send({ message: 'Получены не корректные данные' });
+      return;
+    }
     res
       .status(500)
-      .send('Что-то пошло не так');
+      .send('На сервере произошла ошибка');
   });
 
 module.exports = {

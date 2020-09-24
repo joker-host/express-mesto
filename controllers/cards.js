@@ -5,7 +5,7 @@ const getAllCards = (req, res) => Card.find({})
     if (!data) {
       res
         .status(500)
-        .send('Что-то пошло не так');
+        .send('На сервере произошла ошибка');
       return;
     }
     res
@@ -27,7 +27,7 @@ const createCard = (req, res) => {
     .catch((err) => {
       res
         .status(500)
-        .send('Что-то пошло не так');
+        .send('На сервере произошла ошибка');
     });
 };
 
@@ -42,7 +42,7 @@ const deleteCard = (req, res) => Card.remove({ _id: req.params.id })
   .catch((err) => {
     res
       .status(500)
-      .send('Что-то пошло не так');
+      .send('На сервере произошла ошибка');
   });
 
 module.exports = {
