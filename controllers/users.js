@@ -13,11 +13,14 @@ const getAllUsers = (req, res) => User.find({})
 
 const getUserById = (req, res) => User.findById({ _id: req.params.id })
   .then((user) => {
+    if(user === null) {
+      return res.status(404).send({ message: 'Пользователь не найден' });
+    }
     return res.status(200).send(user);
   })
   .catch((error) => {
     if (error.name = 'CastError') {
-      return res.status(404).send({ message: 'Пользователь не найдена' });
+      return res.status(404).send({ message: 'Пользователь не найден' });
     }
     res.status(500).send('На сервере произошла ошибка');
   });
